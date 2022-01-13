@@ -5,6 +5,13 @@
 
 package Main;
 import java.sql.*;
+import Main.Jobs;
+import Main.Staff;
+import Main.Product;
+import Main.Department;
+import Main.Transaction;
+import Main.Vendors;
+import Main.HomePage;
 /**
  *
  * @author Alif
@@ -48,25 +55,7 @@ public class Main extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
-    public static void ConnectDB(){
-        
-        try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from vendor");
-            
-            while(rs.next()){
-                System.out.println(rs.getString(1) + " " +  rs.getString(2));
-            }
-            
-            con.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        
-    }
-    
+     
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -74,7 +63,7 @@ public class Main extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        ConnectDB();
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -92,12 +81,13 @@ public class Main extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        ConnectDB();
+        
 
-        Home homePage = new Home();
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                HomePage home = new HomePage();
+                home.setVisible(true);
             }
         });
     }

@@ -3,6 +3,13 @@ package Main;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import Main.Jobs;
+import Main.Staff;
+import Main.Product;
+import Main.Home;
+import Main.Transaction;
+import Main.Vendors;
+import Main.Main;
 
 public class Department extends javax.swing.JFrame {
 
@@ -26,6 +33,7 @@ public class Department extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        backbutton = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         savebutton = new javax.swing.JButton();
         updatebutton = new javax.swing.JButton();
@@ -33,17 +41,17 @@ public class Department extends javax.swing.JFrame {
         searchbutton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        txttitle = new javax.swing.JTextField();
+        departmentid = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtgenre = new javax.swing.JTextField();
+        staffid = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtauthor = new javax.swing.JTextField();
+        noofemployees = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("The Archive Database");
+        setTitle("Department Information Page");
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 255));
 
@@ -52,6 +60,17 @@ public class Department extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Department Information");
 
+        backbutton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        backbutton.setText("Back");
+        backbutton.setFocusable(false);
+        backbutton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        backbutton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        backbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backbuttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -59,14 +78,20 @@ public class Department extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(backbutton)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel1)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(backbutton)
+                .addGap(32, 32, 32))
         );
 
         jToolBar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -125,30 +150,30 @@ public class Department extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Department ID");
 
-        txttitle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txttitle.addActionListener(new java.awt.event.ActionListener() {
+        departmentid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        departmentid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txttitleActionPerformed(evt);
+                departmentidActionPerformed(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("Staff ID");
 
-        txtgenre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtgenre.addActionListener(new java.awt.event.ActionListener() {
+        staffid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        staffid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtgenreActionPerformed(evt);
+                staffidActionPerformed(evt);
             }
         });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("No. of employees");
 
-        txtauthor.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtauthor.addActionListener(new java.awt.event.ActionListener() {
+        noofemployees.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        noofemployees.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtauthorActionPerformed(evt);
+                noofemployeesActionPerformed(evt);
             }
         });
 
@@ -162,15 +187,15 @@ public class Department extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtgenre, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(staffid, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txttitle, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(departmentid, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtauthor, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(noofemployees, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -178,16 +203,16 @@ public class Department extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txttitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(departmentid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(52, 52, 52)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtauthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(noofemployees, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtgenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(staffid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(38, 38, 38))
         );
 
@@ -276,17 +301,23 @@ public class Department extends javax.swing.JFrame {
         
     }//GEN-LAST:event_searchbuttonActionPerformed
 
-    private void txttitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttitleActionPerformed
+    private void departmentidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_departmentidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txttitleActionPerformed
+    }//GEN-LAST:event_departmentidActionPerformed
 
-    private void txtgenreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtgenreActionPerformed
+    private void staffidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtgenreActionPerformed
+    }//GEN-LAST:event_staffidActionPerformed
 
-    private void txtauthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtauthorActionPerformed
+    private void noofemployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noofemployeesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtauthorActionPerformed
+    }//GEN-LAST:event_noofemployeesActionPerformed
+
+    private void backbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backbuttonActionPerformed
+    HomePage home = new HomePage();
+    home.setVisible(true);
+    dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_backbuttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,7 +358,9 @@ public class Department extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backbutton;
     private javax.swing.JButton deletebutton;
+    private javax.swing.JTextField departmentid;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -338,11 +371,10 @@ public class Department extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTextField noofemployees;
     private javax.swing.JButton savebutton;
     private javax.swing.JButton searchbutton;
-    private javax.swing.JTextField txtauthor;
-    private javax.swing.JTextField txtgenre;
-    private javax.swing.JTextField txttitle;
+    private javax.swing.JTextField staffid;
     private javax.swing.JButton updatebutton;
     // End of variables declaration//GEN-END:variables
 }

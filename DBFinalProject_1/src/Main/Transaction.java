@@ -3,6 +3,13 @@ package Main;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import Main.Jobs;
+import Main.Staff;
+import Main.Product;
+import Main.Department;
+import Main.Home;
+import Main.Vendors;
+import Main.Main;
 
 public class Transaction extends javax.swing.JFrame {
 
@@ -25,6 +32,7 @@ public class Transaction extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        backbutton = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         savebutton = new javax.swing.JButton();
         updatebutton = new javax.swing.JButton();
@@ -32,21 +40,21 @@ public class Transaction extends javax.swing.JFrame {
         searchbutton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        txttitle = new javax.swing.JTextField();
+        transactionid = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtgenre = new javax.swing.JTextField();
+        productamount = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtauthor = new javax.swing.JTextField();
+        customername = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        txtgenre1 = new javax.swing.JTextField();
-        txtgenre3 = new javax.swing.JTextField();
+        productid = new javax.swing.JTextField();
+        staffid = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("The Archive Database");
+        setTitle("Transactions Page");
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 255));
 
@@ -55,6 +63,17 @@ public class Transaction extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Transactions");
 
+        backbutton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        backbutton.setText("Back");
+        backbutton.setFocusable(false);
+        backbutton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        backbutton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        backbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backbuttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -62,13 +81,20 @@ public class Transaction extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(backbutton)
+                .addGap(23, 23, 23))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(backbutton)))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -126,32 +152,32 @@ public class Transaction extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel2.setText("ID");
+        jLabel2.setText("Transaction ID");
 
-        txttitle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txttitle.addActionListener(new java.awt.event.ActionListener() {
+        transactionid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        transactionid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txttitleActionPerformed(evt);
+                transactionidActionPerformed(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("Staff ID");
 
-        txtgenre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtgenre.addActionListener(new java.awt.event.ActionListener() {
+        productamount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        productamount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtgenreActionPerformed(evt);
+                productamountActionPerformed(evt);
             }
         });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("Customer Name");
 
-        txtauthor.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtauthor.addActionListener(new java.awt.event.ActionListener() {
+        customername.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        customername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtauthorActionPerformed(evt);
+                customernameActionPerformed(evt);
             }
         });
 
@@ -161,17 +187,17 @@ public class Transaction extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setText("Product ID");
 
-        txtgenre1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtgenre1.addActionListener(new java.awt.event.ActionListener() {
+        productid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        productid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtgenre1ActionPerformed(evt);
+                productidActionPerformed(evt);
             }
         });
 
-        txtgenre3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtgenre3.addActionListener(new java.awt.event.ActionListener() {
+        staffid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        staffid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtgenre3ActionPerformed(evt);
+                staffidActionPerformed(evt);
             }
         });
 
@@ -185,23 +211,23 @@ public class Transaction extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                        .addComponent(txtgenre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(productamount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtgenre3, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(txtgenre1)))
+                            .addComponent(staffid, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(productid)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txttitle, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(transactionid, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtauthor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(customername, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -209,24 +235,24 @@ public class Transaction extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txttitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(transactionid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtauthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(customername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtgenre3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(staffid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtgenre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(productid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtgenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(productamount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
         );
 
@@ -315,25 +341,31 @@ public class Transaction extends javax.swing.JFrame {
         
     }//GEN-LAST:event_searchbuttonActionPerformed
 
-    private void txttitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttitleActionPerformed
+    private void transactionidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactionidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txttitleActionPerformed
+    }//GEN-LAST:event_transactionidActionPerformed
 
-    private void txtgenreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtgenreActionPerformed
+    private void productamountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productamountActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtgenreActionPerformed
+    }//GEN-LAST:event_productamountActionPerformed
 
-    private void txtauthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtauthorActionPerformed
+    private void customernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtauthorActionPerformed
+    }//GEN-LAST:event_customernameActionPerformed
 
-    private void txtgenre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtgenre1ActionPerformed
+    private void productidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtgenre1ActionPerformed
+    }//GEN-LAST:event_productidActionPerformed
 
-    private void txtgenre3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtgenre3ActionPerformed
+    private void staffidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtgenre3ActionPerformed
+    }//GEN-LAST:event_staffidActionPerformed
+
+    private void backbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backbuttonActionPerformed
+    HomePage home = new HomePage();
+    home.setVisible(true);
+    dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_backbuttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -374,6 +406,8 @@ public class Transaction extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backbutton;
+    private javax.swing.JTextField customername;
     private javax.swing.JButton deletebutton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -387,13 +421,12 @@ public class Transaction extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTextField productamount;
+    private javax.swing.JTextField productid;
     private javax.swing.JButton savebutton;
     private javax.swing.JButton searchbutton;
-    private javax.swing.JTextField txtauthor;
-    private javax.swing.JTextField txtgenre;
-    private javax.swing.JTextField txtgenre1;
-    private javax.swing.JTextField txtgenre3;
-    private javax.swing.JTextField txttitle;
+    private javax.swing.JTextField staffid;
+    private javax.swing.JTextField transactionid;
     private javax.swing.JButton updatebutton;
     // End of variables declaration//GEN-END:variables
 }

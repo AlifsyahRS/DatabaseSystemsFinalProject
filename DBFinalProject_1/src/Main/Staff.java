@@ -3,6 +3,13 @@ package Main;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import Main.Jobs;
+import Main.Home;
+import Main.Product;
+import Main.Department;
+import Main.Transaction;
+import Main.Vendors;
+import Main.Main;
 
 public class Staff extends javax.swing.JFrame {
 
@@ -11,7 +18,6 @@ public class Staff extends javax.swing.JFrame {
     public Staff() {
         initComponents();
     }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,6 +32,7 @@ public class Staff extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        backbutton = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         savebutton = new javax.swing.JButton();
         updatebutton = new javax.swing.JButton();
@@ -33,21 +40,21 @@ public class Staff extends javax.swing.JFrame {
         searchbutton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        txttitle = new javax.swing.JTextField();
+        staffid = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtgenre = new javax.swing.JTextField();
+        jobid = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtauthor = new javax.swing.JTextField();
+        gender = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtauthor1 = new javax.swing.JTextField();
+        salary = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtauthor2 = new javax.swing.JTextField();
+        staffname = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("The Archive Database");
+        setTitle("Staff Information Page");
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 255));
 
@@ -56,6 +63,17 @@ public class Staff extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Staff Information");
 
+        backbutton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        backbutton.setText("Back");
+        backbutton.setFocusable(false);
+        backbutton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        backbutton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        backbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backbuttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -63,14 +81,20 @@ public class Staff extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(backbutton)
+                .addGap(50, 50, 50))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel1)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(backbutton)
+                .addGap(35, 35, 35))
         );
 
         jToolBar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -129,50 +153,50 @@ public class Staff extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Staff ID");
 
-        txttitle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txttitle.addActionListener(new java.awt.event.ActionListener() {
+        staffid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        staffid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txttitleActionPerformed(evt);
+                staffidActionPerformed(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("Job ID");
 
-        txtgenre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtgenre.addActionListener(new java.awt.event.ActionListener() {
+        jobid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jobid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtgenreActionPerformed(evt);
+                jobidActionPerformed(evt);
             }
         });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("Gender");
 
-        txtauthor.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtauthor.addActionListener(new java.awt.event.ActionListener() {
+        gender.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        gender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtauthorActionPerformed(evt);
+                genderActionPerformed(evt);
             }
         });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setText("Salary");
 
-        txtauthor1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtauthor1.addActionListener(new java.awt.event.ActionListener() {
+        salary.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        salary.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtauthor1ActionPerformed(evt);
+                salaryActionPerformed(evt);
             }
         });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setText("Staff Name");
 
-        txtauthor2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtauthor2.addActionListener(new java.awt.event.ActionListener() {
+        staffname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        staffname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtauthor2ActionPerformed(evt);
+                staffnameActionPerformed(evt);
             }
         });
 
@@ -188,24 +212,24 @@ public class Staff extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(68, 68, 68)
-                                .addComponent(txtgenre, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jobid, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txttitle, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(staffid, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtauthor, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtauthor1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(salary, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtauthor2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(staffname, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -213,24 +237,24 @@ public class Staff extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txttitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(staffid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtauthor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(staffname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtauthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtauthor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(salary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtgenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jobid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28))
         );
 
@@ -319,25 +343,31 @@ public class Staff extends javax.swing.JFrame {
         
     }//GEN-LAST:event_searchbuttonActionPerformed
 
-    private void txttitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttitleActionPerformed
+    private void staffidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txttitleActionPerformed
+    }//GEN-LAST:event_staffidActionPerformed
 
-    private void txtgenreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtgenreActionPerformed
+    private void jobidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jobidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtgenreActionPerformed
+    }//GEN-LAST:event_jobidActionPerformed
 
-    private void txtauthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtauthorActionPerformed
+    private void genderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtauthorActionPerformed
+    }//GEN-LAST:event_genderActionPerformed
 
-    private void txtauthor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtauthor1ActionPerformed
+    private void salaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salaryActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtauthor1ActionPerformed
+    }//GEN-LAST:event_salaryActionPerformed
 
-    private void txtauthor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtauthor2ActionPerformed
+    private void staffnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffnameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtauthor2ActionPerformed
+    }//GEN-LAST:event_staffnameActionPerformed
+
+    private void backbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backbuttonActionPerformed
+    HomePage home = new HomePage();
+    home.setVisible(true);
+    dispose();  // TODO add your handling code here:
+    }//GEN-LAST:event_backbuttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -378,7 +408,9 @@ public class Staff extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backbutton;
     private javax.swing.JButton deletebutton;
+    private javax.swing.JTextField gender;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -391,13 +423,12 @@ public class Staff extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTextField jobid;
+    private javax.swing.JTextField salary;
     private javax.swing.JButton savebutton;
     private javax.swing.JButton searchbutton;
-    private javax.swing.JTextField txtauthor;
-    private javax.swing.JTextField txtauthor1;
-    private javax.swing.JTextField txtauthor2;
-    private javax.swing.JTextField txtgenre;
-    private javax.swing.JTextField txttitle;
+    private javax.swing.JTextField staffid;
+    private javax.swing.JTextField staffname;
     private javax.swing.JButton updatebutton;
     // End of variables declaration//GEN-END:variables
 }

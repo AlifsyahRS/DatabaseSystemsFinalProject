@@ -3,6 +3,13 @@ package Main;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import Main.Jobs;
+import Main.Staff;
+import Main.Product;
+import Main.Department;
+import Main.Transaction;
+import Main.Home;
+import Main.Main;
 
 public class Vendors extends javax.swing.JFrame {
 
@@ -25,6 +32,7 @@ public class Vendors extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        backbutton = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         savebutton = new javax.swing.JButton();
         updatebutton = new javax.swing.JButton();
@@ -32,17 +40,15 @@ public class Vendors extends javax.swing.JFrame {
         searchbutton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        txttitle = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        txtgenre = new javax.swing.JTextField();
+        vendorid = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtauthor = new javax.swing.JTextField();
+        vendorname = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("The Archive Database");
+        setTitle("Vendor Information Page");
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 255));
 
@@ -51,6 +57,17 @@ public class Vendors extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Vendor Information");
 
+        backbutton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        backbutton.setText("Back");
+        backbutton.setFocusable(false);
+        backbutton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        backbutton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        backbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backbuttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -58,14 +75,20 @@ public class Vendors extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(backbutton)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel1)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(backbutton)
+                .addGap(35, 35, 35))
         );
 
         jToolBar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -124,30 +147,20 @@ public class Vendors extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Vendor ID");
 
-        txttitle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txttitle.addActionListener(new java.awt.event.ActionListener() {
+        vendorid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        vendorid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txttitleActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setText("Product Amount");
-
-        txtgenre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtgenre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtgenreActionPerformed(evt);
+                vendoridActionPerformed(evt);
             }
         });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("Name");
 
-        txtauthor.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtauthor.addActionListener(new java.awt.event.ActionListener() {
+        vendorname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        vendorname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtauthorActionPerformed(evt);
+                vendornameActionPerformed(evt);
             }
         });
 
@@ -157,19 +170,13 @@ public class Vendors extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5))
+                .addGap(125, 125, 125)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(68, 68, 68)
-                        .addComponent(txtgenre, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txttitle, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtauthor, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(vendorname, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(vendorid, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -177,17 +184,13 @@ public class Vendors extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txttitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(vendorid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(52, 52, 52)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtauthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtgenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38))
+                    .addComponent(vendorname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(60, 60, 60))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -197,11 +200,11 @@ public class Vendors extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Staff ID", "Name", "Product Amount"
+                "Vendor ID", "Name"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -275,17 +278,19 @@ public class Vendors extends javax.swing.JFrame {
         
     }//GEN-LAST:event_searchbuttonActionPerformed
 
-    private void txttitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttitleActionPerformed
+    private void vendoridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vendoridActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txttitleActionPerformed
+    }//GEN-LAST:event_vendoridActionPerformed
 
-    private void txtgenreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtgenreActionPerformed
+    private void vendornameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vendornameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtgenreActionPerformed
+    }//GEN-LAST:event_vendornameActionPerformed
 
-    private void txtauthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtauthorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtauthorActionPerformed
+    private void backbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backbuttonActionPerformed
+    HomePage home = new HomePage();
+    home.setVisible(true);
+    dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_backbuttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -326,10 +331,10 @@ public class Vendors extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backbutton;
     private javax.swing.JButton deletebutton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -339,9 +344,8 @@ public class Vendors extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton savebutton;
     private javax.swing.JButton searchbutton;
-    private javax.swing.JTextField txtauthor;
-    private javax.swing.JTextField txtgenre;
-    private javax.swing.JTextField txttitle;
     private javax.swing.JButton updatebutton;
+    private javax.swing.JTextField vendorid;
+    private javax.swing.JTextField vendorname;
     // End of variables declaration//GEN-END:variables
 }
