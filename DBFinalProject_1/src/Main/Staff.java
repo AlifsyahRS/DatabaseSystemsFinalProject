@@ -10,6 +10,7 @@ import Main.Department;
 import Main.Transaction;
 import Main.Vendors;
 import Main.Main;
+import java.sql.*;
 
 public class Staff extends javax.swing.JFrame {
 
@@ -325,22 +326,159 @@ public class Staff extends javax.swing.JFrame {
     
     //save feature
     private void savebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savebuttonActionPerformed
-        
+        String staffID = staffid.getText();
+        String staffName = staffname.getText();
+        String staffGender = gender.getText();
+        String staffSalary = salary.getText();
+        String jobID = jobid.getText();        
+        if(staffID.equals("") || staffName.equals("") || staffGender.equals("") || staffSalary.equals("") || jobID.equals("")){
+            return;
+        }
+        String query = "insert into staff (staffid,staffname,gender,salary,jobid) values ('" + staffID + "', '" + staffName + "', '" + staffGender + "', " + staffSalary + ", '" + jobID + "')";    
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            con.close();
+            staffid.setText("");
+            staffname.setText("");
+            gender.setText("");
+            salary.setText("");
+            jobid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_savebuttonActionPerformed
     
     //update feature
     private void updatebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatebuttonActionPerformed
-       
+        String staffID = staffid.getText();
+        String staffName = staffname.getText();
+        String staffGender = gender.getText();
+        String staffSalary = salary.getText();
+        String jobID = jobid.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if(staffID.equals("") || staffName.equals("") || staffGender.equals("") || staffSalary.equals("") || jobID.equals("")){
+            return;
+        }
+        String query = "update staff set staffid = '" + staffID + "', staffname = '" + staffName + "', gender = '" + staffGender + "', salary = " + staffSalary + ", jobid = '" + jobID + 
+                "' where staffid = '" + model.getValueAt(0,0).toString() + "'";
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            PreparedStatement stmtSelect = con.prepareStatement("select * from staff where staffid = '" + staffID + "'");
+            ResultSet rs = stmtSelect.executeQuery(); // Selects added row to put into table
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getString(5)};
+                model.addRow(row);
+            }            
+            con.close();
+            staffid.setText("");
+            staffname.setText("");
+            gender.setText("");
+            salary.setText("");
+            jobid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_updatebuttonActionPerformed
     
     //delete feature
     private void deletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebuttonActionPerformed
-        
+        String staffID = staffid.getText();
+        String staffName = staffname.getText();
+        String staffGender = gender.getText();
+        String staffSalary = salary.getText();
+        String jobID = jobid.getText();
+        if(staffID.equals("") && staffName.equals("") && staffGender.equals("") && staffSalary.equals("") && jobID.equals("")){
+            return;
+        }
+        String query = "delete from staff";
+        String whereClause = " where";
+        if(!staffID.equals("")){
+            whereClause = whereClause + " staffid = '" + staffID + "' and";
+        }
+        if(!staffName.equals("")){
+            whereClause = whereClause + " staffname = '" + staffName + "' and";
+        }
+        if(!staffGender.equals("")){
+            whereClause = whereClause + " gender = '" + staffGender + "' and";
+        }
+        if(!staffSalary.equals("")){
+            whereClause = whereClause + " salary = " + staffSalary + " and";
+        }
+        if(!jobID.equals("")){
+            whereClause = whereClause + " jobid = '" + jobID + "' and";
+        }
+        if(!staffID.equals("") || !staffName.equals("") || !staffGender.equals("") || !staffSalary.equals("") || !jobID.equals("")){
+            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+            query = query.substring(0,query.length()-4);
+        } else {
+            return;
+        }
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            con.close();
+            staffid.setText("");
+            staffname.setText("");
+            gender.setText("");
+            salary.setText("");
+            jobid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_deletebuttonActionPerformed
     
     //search feature
     private void searchbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbuttonActionPerformed
-        
+        String staffID = staffid.getText();
+        String staffName = staffname.getText();
+        String staffGender = gender.getText();
+        String staffSalary = salary.getText();
+        String jobID = jobid.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        String query = "select * from staff";
+        String whereClause = " where";
+        if(!staffID.equals("")){
+            whereClause = whereClause + " staffid = '" + staffID + "' and";
+        }
+        if(!staffName.equals("")){
+            whereClause = whereClause + " staffname = '" + staffName + "' and";
+        }
+        if(!staffGender.equals("")){
+            whereClause = whereClause + " gender = '" + staffGender + "' and";
+        }
+        if(!staffSalary.equals("")){
+            whereClause = whereClause + " salary = " + staffSalary + " and";
+        }
+        if(!jobID.equals("")){
+            whereClause = whereClause + " jobid = '" + jobID + "' and";
+        }
+        if(!staffID.equals("") || !staffName.equals("") || !staffGender.equals("") || !staffSalary.equals("") || !jobID.equals("")){
+            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+            query = query.substring(0,query.length()-4);
+        }
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getString(5)};
+                model.addRow(row);
+            }
+            con.close();
+            staffid.setText("");
+            staffname.setText("");
+            gender.setText("");
+            salary.setText("");
+            jobid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_searchbuttonActionPerformed
 
     private void staffidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffidActionPerformed

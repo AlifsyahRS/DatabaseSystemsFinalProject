@@ -10,6 +10,7 @@ import Main.Department;
 import Main.Transaction;
 import Main.Vendors;
 import Main.Main;
+import java.sql.*;
 
 public class Jobs extends javax.swing.JFrame {
 
@@ -284,23 +285,122 @@ public class Jobs extends javax.swing.JFrame {
     
     //save feature
     private void savebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savebuttonActionPerformed
-        
+        String jobID = jobid.getText();
+        String name = jobname.getText();
+        String dptID = departmentid.getText();
+        if (jobID.equals("") || name.equals("") || dptID.equals("")){
+            return;
+        }
+        String query = "insert into job (jobid,jobname,departmentid) values ('" + jobID + "','" + name + "','" + dptID + "')";
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            con.close();
+            jobid.setText("");
+            jobname.setText("");
+            departmentid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
     }//GEN-LAST:event_savebuttonActionPerformed
     
     //update feature
     private void updatebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatebuttonActionPerformed
-
+        String jobID = jobid.getText();
+        String name = jobname.getText();
+        String dptID = departmentid.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if (jobID.equals("") || name.equals("") || dptID.equals("")){
+            return;
+        }
+        String query = "update job set jobid = '" + jobID + "', jobname = '" + name + "', departmentid = '" + dptID + "' where jobid = '" + model.getValueAt(0,0).toString() + "'";
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            con.close();
+            jobid.setText("");
+            jobname.setText("");
+            departmentid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
     }//GEN-LAST:event_updatebuttonActionPerformed
     
     //delete feature
     private void deletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebuttonActionPerformed
-        
+        String jobID = jobid.getText();
+        String name = jobname.getText();
+        String dptID = departmentid.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        String query = "delete from job";
+        String whereClause = " where";
+        if (!jobID.equals("")){
+            whereClause = whereClause + " jobid = '" + jobID + "' and"; 
+        }
+        if (!name.equals("")){
+            whereClause = whereClause + " jobName = '" + name + "' and";
+        }
+        if (!dptID.equals("")){
+            whereClause = whereClause + " departmentid = '" + dptID + "' and";
+        }
+        if (!jobID.equals("") || !name.equals("") || !dptID.equals("")){
+            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+            query = query.substring(0,query.length()-4);
+        } else {
+            return;
+        }
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            con.close();
+            jobid.setText("");
+            jobname.setText("");
+            departmentid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }         
     }//GEN-LAST:event_deletebuttonActionPerformed
     
     //search feature
-    int search;
     private void searchbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbuttonActionPerformed
-  
+        String jobID = jobid.getText();
+        String name = jobname.getText();
+        String dptID = departmentid.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        String query = "select * from job";
+        String whereClause = " where";
+        if (!jobID.equals("")){
+            whereClause = whereClause + " jobid = '" + jobID + "' and"; 
+        }
+        if (!name.equals("")){
+            whereClause = whereClause + " jobName = '" + name + "' and";
+        }
+        if (!dptID.equals("")){
+            whereClause = whereClause + " departmentid = '" + dptID + "' and";
+        }
+        if (!jobID.equals("") || !name.equals("") || !dptID.equals("")){
+            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+            query = query.substring(0,query.length()-4);
+        }
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3)};
+                model.addRow(row);
+            }
+            con.close();
+            jobid.setText("");
+            jobname.setText("");
+            departmentid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_searchbuttonActionPerformed
 
     private void jobidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jobidActionPerformed

@@ -10,7 +10,8 @@ import Main.Department;
 import Main.Home;
 import Main.Vendors;
 import Main.Main;
-
+import java.sql.*;
+import java.time.*;
 public class Transaction extends javax.swing.JFrame {
 
 
@@ -49,6 +50,8 @@ public class Transaction extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         productid = new javax.swing.JTextField();
         staffid = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        datebought = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -162,7 +165,7 @@ public class Transaction extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setText("Staff ID");
+        jLabel3.setText("Staff ID (Cashier)");
 
         productamount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         productamount.addActionListener(new java.awt.event.ActionListener() {
@@ -182,7 +185,7 @@ public class Transaction extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel6.setText("Product Amount");
+        jLabel6.setText("Date Bought");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setText("Product ID");
@@ -201,6 +204,16 @@ public class Transaction extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel8.setText("Product Amount");
+
+        datebought.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        datebought.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateboughtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -208,9 +221,13 @@ public class Transaction extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(datebought, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(productamount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,9 +243,9 @@ public class Transaction extends javax.swing.JFrame {
                         .addComponent(transactionid, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                         .addComponent(customername, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,9 +268,13 @@ public class Transaction extends javax.swing.JFrame {
                     .addComponent(productid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(productamount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(productamount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24))
+                    .addComponent(datebought, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -263,11 +284,11 @@ public class Transaction extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Transaction ID", "Customer Name", "Staff ID", "Product ID", "Product Amount"
+                "ID", "Cust. Name", "Staff ID", "Product ID", "Amount", "Total", "Date"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -282,7 +303,7 @@ public class Transaction extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -323,22 +344,191 @@ public class Transaction extends javax.swing.JFrame {
     
     //save feature
     private void savebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savebuttonActionPerformed
-        
+        String transID = transactionid.getText();
+        String custName = customername.getText();
+        String staffID = staffid.getText();
+        String productID = productid.getText();
+        String amt = productamount.getText();
+        String transDate = datebought.getText();
+        double productPrice = 0;
+        int productStock = 0;
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        if (transID.equals("") || custName.equals("") || staffID.equals("") || productID.equals("") || amt.equals("") || transDate.equals("")){
+            return;
+        }
+        try {
+            String priceQuery = "select price,stock from product where productID = '" + productID + "'"; // Getting price and stock of the product
+            System.out.println(priceQuery);
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt1 = con.prepareStatement(priceQuery);
+            ResultSet rs = stmt1.executeQuery();
+            while(rs.next()){
+                productPrice = rs.getDouble(1);
+                productStock = rs.getInt(2);
+            }
+            double total = productPrice * Integer.parseInt(amt);
+
+            // Updating stock of the product
+            productStock = productStock - Integer.parseInt(amt);
+            if (productStock >= 0) { // If updated product stock is less than 0, insert will not commence
+                PreparedStatement updateStock = con.prepareStatement("update product set stock = " + productStock + " where productid = '" + productID + "'");
+                updateStock.execute();
+            } else {
+                return;
+            }
+            String query = "insert into transaction(transactionid,customername,staffid,productid,amount,total,date) "
+                    + "values ('" + transID + "','" + custName + "','" + staffID + "','" + productID + "'," + amt + "," + total + ",'" + transDate + "')";
+            PreparedStatement stmt2 = con.prepareStatement(query);stmt2.execute();
+            PreparedStatement selectStmt = con.prepareStatement("select * from transaction where transactionid = '" + transID + "'"); // Selects added row to be put into table
+            ResultSet rsSelect = selectStmt.executeQuery();
+            while(rsSelect.next()){
+                Object [] row = {rsSelect.getString(1),rsSelect.getString(2),rsSelect.getString(3),rsSelect.getString(4),rsSelect.getInt(5),rsSelect.getDouble(6),rsSelect.getString(7)};
+                model.addRow(row);
+            }
+            con.close();
+            transactionid.setText("");
+            customername.setText("");
+            staffid.setText("");
+            productid.setText("");
+            productamount.setText("");
+            datebought.setText("");
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_savebuttonActionPerformed
     
     //update feature
     private void updatebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatebuttonActionPerformed
-        
+        String transID = transactionid.getText();
+        String custName = customername.getText();
+        String staffID = staffid.getText();
+        String productID = productid.getText();
+        String amt = productamount.getText();
+        String transDate = datebought.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if (transID.equals("") || custName.equals("") || staffid.equals("") || productid.equals("") || productamount.equals("") || datebought.equals("")){
+            return; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+        }
+        String query = "update transaction set transactionid = '" + transID + "', customername = '" + custName + "', staffid = '" + staffID + "', productID = '" + productID + "', amount = " + amt + 
+                ", date = '" + transDate + "' where transactionid = '" + model.getValueAt(0,0) + "'";
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            transactionid.setText("");
+            customername.setText("");
+            staffid.setText("");
+            productid.setText("");
+            productamount.setText("");
+            datebought.setText("");
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_updatebuttonActionPerformed
     
     //delete feature
     private void deletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebuttonActionPerformed
-       
+        String transID = transactionid.getText();
+        String custName = customername.getText();
+        String staffID = staffid.getText();
+        String productID = productid.getText();
+        String amt = productamount.getText();
+        String transDate = datebought.getText();
+        String query = "delete from transaction";
+        String whereClause = " where";
+        if(!transID.equals("")){
+            whereClause = whereClause + " transactionid = '" + transID + "' and";
+        }
+        if(!custName.equals("")){
+            whereClause = whereClause + " customername = '" + custName + "' and";
+        }
+        if(!staffID.equals("")){
+            whereClause = whereClause + " staffid = '" + staffID + "' and";
+        }
+        if(!productID.equals("")){
+            whereClause = whereClause + " productid = '" + productID + "' and";
+        }
+        if(!amt.equals("")){
+            whereClause = whereClause + " amount = '" + amt + "' and";
+        }
+        if(!transDate.equals("")){
+            whereClause = whereClause + " date = '" + transDate + "' and";
+        }
+        if (!transID.equals("") || !custName.equals("") || !staffID.equals("") || !productID.equals("") || !amt.equals("") || !transDate.equals("")){
+            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+            query = query.substring(0,query.length()-4);
+        } else {
+            return;
+        }
+        
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            transactionid.setText("");
+            customername.setText("");
+            staffid.setText("");
+            productid.setText("");
+            productamount.setText("");
+            datebought.setText("");
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_deletebuttonActionPerformed
     
     //search feature
     private void searchbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbuttonActionPerformed
+        String transID = transactionid.getText();
+        String custName = customername.getText();
+        String staffID = staffid.getText();
+        String productID = productid.getText();
+        String amt = productamount.getText();
+        String transDate = datebought.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        String query = "select * from transaction";
+        String whereClause = " where";
+        if(!transID.equals("")){
+            whereClause = whereClause + " transactionid = '" + transID + "' and";
+        }
+        if(!custName.equals("")){
+            whereClause = whereClause + " customername = '" + custName + "' and";
+        }
+        if(!staffID.equals("")){
+            whereClause = whereClause + " staffid = '" + staffID + "' and";
+        }
+        if(!productID.equals("")){
+            whereClause = whereClause + " productid = '" + productID + "' and";
+        }
+        if(!amt.equals("")){
+            whereClause = whereClause + " amount = '" + amt + "' and";
+        }
+        if(!transDate.equals("")){
+            whereClause = whereClause + " date = '" + transDate + "' and";
+        }
+        if (!transID.equals("") || !custName.equals("") || !staffID.equals("") || !productID.equals("") || !amt.equals("") || !transDate.equals("")){
+            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+            query = query.substring(0,query.length()-4);
+        }
         
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getDouble(6),rs.getTimestamp(7)};
+                model.addRow(row);
+            }
+            transactionid.setText("");
+            customername.setText("");
+            staffid.setText("");
+            productid.setText("");
+            productamount.setText("");
+            datebought.setText("");
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_searchbuttonActionPerformed
 
     private void transactionidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactionidActionPerformed
@@ -366,6 +556,10 @@ public class Transaction extends javax.swing.JFrame {
     home.setVisible(true);
     dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_backbuttonActionPerformed
+
+    private void dateboughtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateboughtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateboughtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,6 +602,7 @@ public class Transaction extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backbutton;
     private javax.swing.JTextField customername;
+    private javax.swing.JTextField datebought;
     private javax.swing.JButton deletebutton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -415,6 +610,7 @@ public class Transaction extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

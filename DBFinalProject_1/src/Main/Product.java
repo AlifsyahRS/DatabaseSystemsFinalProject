@@ -12,7 +12,7 @@ import Main.Vendors;
 import Main.Main;
 import java.awt.event.WindowEvent;
 import java.awt.*;
-
+import java.sql.*;
 
 
 public class Product extends javax.swing.JFrame {
@@ -352,22 +352,173 @@ public class Product extends javax.swing.JFrame {
     
     //save feature
     private void savebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savebuttonActionPerformed
-        
+        String id = productid.getText();
+        String name = productname.getText();
+        String type = producttype.getText();
+        String price = productprice.getText();
+        String stock = productstock.getText();
+        String idVendor = vendorid.getText();
+        if (id.equals("") || name.equals("") || type.equals("") || price.equals("") || stock.equals("") || idVendor.equals("")){
+            return; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+        }        
+        String query = "insert into product(productid,productname,type,price,stock,vendorid) values ('" + id + "', '" + name + "','" + type + "', '" + price + "', '" + stock + "','" + idVendor + "')";
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            con.close();
+            productid.setText("");
+            productname.setText("");
+            producttype.setText("");
+            productprice.setText("");
+            productstock.setText("");
+            vendorid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
     }//GEN-LAST:event_savebuttonActionPerformed
     
     //update feature
     private void updatebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatebuttonActionPerformed
-       
+        String id = productid.getText();
+        String name = productname.getText();
+        String type = producttype.getText();
+        String price = productprice.getText();
+        String stock = productstock.getText();
+        String idVendor = vendorid.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if (id.equals("") || name.equals("") || type.equals("") || price.equals("") || stock.equals("") || idVendor.equals("")){
+            return; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+        }
+        String query;
+        for (int i = 0; i < model.getRowCount(); i++){
+            query = "update product set productid = '" + id + "', productname = '" + name + "', type = '" + type + "', price = " + price + ", stock = " + stock + ", vendorid = '" + idVendor + 
+                    "' where productid = '" + model.getValueAt(i,0).toString() + "'";
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+                PreparedStatement stmt = con.prepareStatement(query);
+                stmt.execute();
+                con.close();
+                productid.setText("");
+                productname.setText("");
+                producttype.setText("");
+                productprice.setText("");
+                productstock.setText("");
+                vendorid.setText("");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }//GEN-LAST:event_updatebuttonActionPerformed
     
     //delete feature
     private void deletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebuttonActionPerformed
+        String id = productid.getText();
+        String name = productname.getText();
+        String type = producttype.getText();
+        String price = productprice.getText();
+        String stock = productstock.getText();
+        String idVendor = vendorid.getText();
+        String query = "delete from product";
+        String whereClause = " where";
+        if (!id.equals("")){
+            whereClause = whereClause + " productid = '" + id + "' and"; 
+        }
+        if(!name.equals("")){
+            whereClause = whereClause + " productname = '" + name + "' and";
+        }
+        if(!type.equals("")){
+            whereClause = whereClause + " type = '" + type + "' and";
+        }
+        if(!price.equals("")){
+            whereClause = whereClause + " price = " + price + " and";
+        }
+        if(!stock.equals("")){
+            whereClause = whereClause + " stock = " + stock + " and";
+        }
 
+        if(!idVendor.equals("")){
+            whereClause = whereClause + " vendorid = '" + idVendor + "' and";
+        }
+        if (id.equals("") || name.equals("") || type.equals("") || price.equals("") || stock.equals("") || idVendor.equals("")){
+            return;
+        } else {
+            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+            query = query.substring(0,query.length()-4);         
+        }
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            con.close();
+            productid.setText("");
+            productname.setText("");
+            producttype.setText("");
+            productprice.setText("");
+            productstock.setText("");
+            vendorid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_deletebuttonActionPerformed
     
     //search feature
     private void searchbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbuttonActionPerformed
         
+        String id = productid.getText();
+        String name = productname.getText();
+        String type = producttype.getText();
+        String price = productprice.getText();
+        String stock = productstock.getText();
+        String idVendor = vendorid.getText();
+        String query = "select * from product";
+        String whereClause = " where";
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        if (!id.equals("")){
+            whereClause = whereClause + " productid = '" + id + "' and"; 
+        }
+        if(!name.equals("")){
+            whereClause = whereClause + " productname = '" + name + "' and";
+        }
+        if(!type.equals("")){
+            whereClause = whereClause + " type = '" + type + "' and";
+        }
+        if(!price.equals("")){
+            whereClause = whereClause + " price = " + price + " and";
+        }
+        if(!stock.equals("")){
+            whereClause = whereClause + " stock = " + stock + " and";
+        }
+
+        if(!idVendor.equals("")){
+            whereClause = whereClause + " vendorid = '" + idVendor + "' and";
+        }
+        
+        if (!id.equals("") || !name.equals("") || !type.equals("") || !price.equals("") || !stock.equals("") || !idVendor.equals("")){
+            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+            query = query.substring(0,query.length()-4);
+        }
+        
+        System.out.println(query);
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getInt(5),rs.getString(6)};
+                model.addRow(row);
+            }
+            con.close();
+            productid.setText("");
+            productname.setText("");
+            producttype.setText("");
+            productprice.setText("");
+            productstock.setText("");
+            vendorid.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
     }//GEN-LAST:event_searchbuttonActionPerformed
 
     private void productidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productidActionPerformed

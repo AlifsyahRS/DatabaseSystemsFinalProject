@@ -10,6 +10,7 @@ import Main.Department;
 import Main.Transaction;
 import Main.Home;
 import Main.Main;
+import java.sql.*;
 
 public class Vendors extends javax.swing.JFrame {
 
@@ -40,9 +41,9 @@ public class Vendors extends javax.swing.JFrame {
         searchbutton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        vendorid = new javax.swing.JTextField();
+        txtVendorID = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        vendorname = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -147,20 +148,20 @@ public class Vendors extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Vendor ID");
 
-        vendorid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        vendorid.addActionListener(new java.awt.event.ActionListener() {
+        txtVendorID.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtVendorID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                vendoridActionPerformed(evt);
+                txtVendorIDActionPerformed(evt);
             }
         });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("Name");
 
-        vendorname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        vendorname.addActionListener(new java.awt.event.ActionListener() {
+        txtName.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                vendornameActionPerformed(evt);
+                txtNameActionPerformed(evt);
             }
         });
 
@@ -175,8 +176,8 @@ public class Vendors extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addGap(125, 125, 125)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(vendorname, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(vendorid, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtVendorID, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -184,12 +185,12 @@ public class Vendors extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(vendorid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtVendorID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(52, 52, 52)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(vendorname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(60, 60, 60))
         );
 
@@ -260,31 +261,110 @@ public class Vendors extends javax.swing.JFrame {
     
     //save feature
     private void savebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savebuttonActionPerformed
-        
+        String vendorID = txtVendorID.getText();
+        String name = txtName.getText();
+        if (vendorID.equals("") || name.equals("")){
+            return; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+        }        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        String query = "insert into vendor (vendorid,vendorname) values ('" + vendorID + "', '" + name + "')";
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            con.close();
+            txtVendorID.setText("");
+            txtName.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }      
     }//GEN-LAST:event_savebuttonActionPerformed
     
     //update feature
     private void updatebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatebuttonActionPerformed
-        
+        String vendorID = txtVendorID.getText();
+        String name = txtName.getText();
+        if (vendorID.equals("") || name.equals("")){
+            return; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+        }
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        String query;
+        for (int i = 0; i < model.getRowCount(); i++){
+            query = "update vendor set vendorid = '" + vendorID + "', vendorname = '" + name + "' where vendorid = '" + model.getValueAt(i,0).toString() + "' and vendorname = '" + model.getValueAt(i,1).toString() + "'";
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+                PreparedStatement stmt = con.prepareStatement(query);
+                stmt.execute();
+                con.close();
+                txtVendorID.setText("");
+                txtName.setText("");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }//GEN-LAST:event_updatebuttonActionPerformed
     
     //delete feature
     private void deletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebuttonActionPerformed
-        
+        String vendorID = txtVendorID.getText();
+        String name = txtName.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if (vendorID.equals("")||name.equals("")){
+            return;
+        }
+        String query = "delete from vendor where vendorid = '" + vendorID + "' and vendorname = '" + name + "'";
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.execute();
+            con.close();
+            txtVendorID.setText("");
+            txtName.setText("");
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
     }//GEN-LAST:event_deletebuttonActionPerformed
     
     //search feature
     private void searchbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbuttonActionPerformed
+        String vendorID = txtVendorID.getText();
+        String vendorName = txtName.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        String query = "select * from vendor where vendorid = '" + vendorID + "' and vendorname = '" + vendorName + "'";
+        if(vendorID.equals("") && vendorName.equals("")){ // Different conditions for what is filled and what is not. 
+           query = "select * from vendor";
+        } else if (vendorID.equals("") && !vendorName.equals("")) { // When ID is left empty, it will search by name
+           query = "select * from vendor where vendorname = '" + vendorName + "'"; 
+        } else if (!vendorID.equals("") && vendorName.equals("")){ // When name is left empty, it will search by IDd
+           query = "select * from vendor where vendorID = '" + vendorID + "'"; 
+        }
+        System.out.println(query);
         
+        try{
+          Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
+          Statement stmt = con.createStatement();
+          ResultSet rs = stmt.executeQuery(query);
+
+          while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2)};
+                model.addRow(row);
+            }
+          con.close();
+          txtVendorID.setText("");
+          txtName.setText("");
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_searchbuttonActionPerformed
 
-    private void vendoridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vendoridActionPerformed
+    private void txtVendorIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVendorIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_vendoridActionPerformed
+    }//GEN-LAST:event_txtVendorIDActionPerformed
 
-    private void vendornameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vendornameActionPerformed
+    private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_vendornameActionPerformed
+    }//GEN-LAST:event_txtNameActionPerformed
 
     private void backbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backbuttonActionPerformed
     HomePage home = new HomePage();
@@ -344,8 +424,8 @@ public class Vendors extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton savebutton;
     private javax.swing.JButton searchbutton;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtVendorID;
     private javax.swing.JButton updatebutton;
-    private javax.swing.JTextField vendorid;
-    private javax.swing.JTextField vendorname;
     // End of variables declaration//GEN-END:variables
 }
