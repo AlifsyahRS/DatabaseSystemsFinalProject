@@ -273,6 +273,8 @@ public class Department extends javax.swing.JFrame {
     private void savebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savebuttonActionPerformed
         String id = dptID.getText();
         String name = dptName.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel(); // Getting the table
+        model.setRowCount(0); // Setting row count to 0
         if (id.equals("") || name.equals("")){
             return; // Text fields need to have something in order for update to work. This avoids empty string values for the table
         }        
@@ -281,6 +283,12 @@ public class Department extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.execute();
+            PreparedStatement selectStmt = con.prepareStatement("select * from department where departmentid = '" + id + "'"); // To display inserted row
+            ResultSet rs = selectStmt.executeQuery();
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2)};
+                model.addRow(row);
+            }
             con.close();
             dptID.setText("");
             dptName.setText("");
@@ -316,10 +324,19 @@ public class Department extends javax.swing.JFrame {
     private void deletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebuttonActionPerformed
         String id = dptID.getText();
         String name = dptName.getText();
-        if (id.equals("") || name.equals("")){
+        if (id.equals("") && name.equals("")){
             return; // Text fields need to have something in order for update to work. This avoids empty string values for the table
         }
-        String query = "delete from department where departmentid = '" + id + "' and departmentname = '" + name + "'";
+        String query = "delete from department";
+        String whereClause = " where";
+        if(!id.equals("")){
+            whereClause = whereClause + " departmentid = '" + id + "' and";
+        }
+        if(!name.equals("")){
+            whereClause = whereClause + " departmentname = '" + name + "' and";
+        }
+        query = query + whereClause; 
+        query = query.substring(0,query.length()-4); 
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);

@@ -266,12 +266,19 @@ public class Vendors extends javax.swing.JFrame {
         if (vendorID.equals("") || name.equals("")){
             return; // Text fields need to have something in order for update to work. This avoids empty string values for the table
         }        
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel(); // Getting the table
+        model.setRowCount(0); // Setting row count to 0
         String query = "insert into vendor (vendorid,vendorname) values ('" + vendorID + "', '" + name + "')";
         try{
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.execute();
+            PreparedStatement stmtSelect = con.prepareStatement("select * from vendor where vendorid = '" + vendorID + "'"); // To display inserted row
+            ResultSet rs = stmtSelect.executeQuery(); // Selects added row to put into table
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2)};
+                model.addRow(row);
+            }   
             con.close();
             txtVendorID.setText("");
             txtName.setText("");
@@ -309,10 +316,19 @@ public class Vendors extends javax.swing.JFrame {
         String vendorID = txtVendorID.getText();
         String name = txtName.getText();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        if (vendorID.equals("")||name.equals("")){
+        if (vendorID.equals("") && name.equals("")){
             return;
         }
-        String query = "delete from vendor where vendorid = '" + vendorID + "' and vendorname = '" + name + "'";
+        String query = "delete from vendor";
+        String whereClause = " where";
+        if(!vendorID.equals("")){
+            whereClause = whereClause + " vendorid = '" + vendorID + "' and";
+        }
+        if(!name.equals("")){
+            whereClause = whereClause + " vendorname = '" + name + "' and";
+        }
+        query = query + whereClause; 
+        query = query.substring(0,query.length()-4); 
         try{
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);
@@ -339,7 +355,6 @@ public class Vendors extends javax.swing.JFrame {
         } else if (!vendorID.equals("") && vendorName.equals("")){ // When name is left empty, it will search by IDd
            query = "select * from vendor where vendorID = '" + vendorID + "'"; 
         }
-        System.out.println(query);
         
         try{
           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");

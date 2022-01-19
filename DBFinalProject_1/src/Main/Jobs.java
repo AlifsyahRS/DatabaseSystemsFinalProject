@@ -288,6 +288,8 @@ public class Jobs extends javax.swing.JFrame {
         String jobID = jobid.getText();
         String name = jobname.getText();
         String dptID = departmentid.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel(); // Getting the table
+        model.setRowCount(0); // Setting row count to 0
         if (jobID.equals("") || name.equals("") || dptID.equals("")){
             return;
         }
@@ -296,6 +298,12 @@ public class Jobs extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.execute();
+            PreparedStatement stmtSelect = con.prepareStatement("select * from job where jobid = '" + jobID + "'"); // To display inserted row
+            ResultSet rs = stmtSelect.executeQuery(); // Selects added row to put into table
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3)};
+                model.addRow(row);
+            }   
             con.close();
             jobid.setText("");
             jobname.setText("");
@@ -345,11 +353,11 @@ public class Jobs extends javax.swing.JFrame {
         if (!dptID.equals("")){
             whereClause = whereClause + " departmentid = '" + dptID + "' and";
         }
-        if (!jobID.equals("") || !name.equals("") || !dptID.equals("")){
+        if (jobID.equals("") && name.equals("") && dptID.equals("")){
+            return;
+        } else {
             query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
             query = query.substring(0,query.length()-4);
-        } else {
-            return;
         }
         try{
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");

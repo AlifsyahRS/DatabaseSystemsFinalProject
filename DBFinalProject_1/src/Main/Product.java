@@ -358,6 +358,8 @@ public class Product extends javax.swing.JFrame {
         String price = productprice.getText();
         String stock = productstock.getText();
         String idVendor = vendorid.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
         if (id.equals("") || name.equals("") || type.equals("") || price.equals("") || stock.equals("") || idVendor.equals("")){
             return; // Text fields need to have something in order for update to work. This avoids empty string values for the table
         }        
@@ -366,6 +368,12 @@ public class Product extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.execute();
+            PreparedStatement selectStmt = con.prepareStatement("select * from product where productid = '" + id + "'"); // To display inserted row
+            ResultSet rs = selectStmt.executeQuery();
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getDouble(4),rs.getInt(5),rs.getString(6)};
+                model.addRow(row);
+            }
             con.close();
             productid.setText("");
             productname.setText("");
@@ -440,10 +448,10 @@ public class Product extends javax.swing.JFrame {
         if(!idVendor.equals("")){
             whereClause = whereClause + " vendorid = '" + idVendor + "' and";
         }
-        if (id.equals("") || name.equals("") || type.equals("") || price.equals("") || stock.equals("") || idVendor.equals("")){
+        if (id.equals("") && name.equals("") && type.equals("") && price.equals("") && stock.equals("") && idVendor.equals("")){// If all the textFields are empty, abort
             return;
         } else {
-            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
+            query = query + whereClause; 
             query = query.substring(0,query.length()-4);         
         }
         try{
@@ -499,8 +507,6 @@ public class Product extends javax.swing.JFrame {
             query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
             query = query.substring(0,query.length()-4);
         }
-        
-        System.out.println(query);
         try{
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             Statement stmt = con.createStatement();

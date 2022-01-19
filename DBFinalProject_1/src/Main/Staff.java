@@ -330,7 +330,9 @@ public class Staff extends javax.swing.JFrame {
         String staffName = staffname.getText();
         String staffGender = gender.getText();
         String staffSalary = salary.getText();
-        String jobID = jobid.getText();        
+        String jobID = jobid.getText();      
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel(); // Getting the table
+        model.setRowCount(0); // Reset the contents of the table
         if(staffID.equals("") || staffName.equals("") || staffGender.equals("") || staffSalary.equals("") || jobID.equals("")){
             return;
         }
@@ -339,6 +341,12 @@ public class Staff extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.execute();
+            PreparedStatement selectStmt = con.prepareStatement("select * from staff where staffid = '" + staffID + "'"); // To display inserted row
+            ResultSet rs = selectStmt.executeQuery();
+            while(rs.next()){
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getString(5)};
+                model.addRow(row);
+            }
             con.close();
             staffid.setText("");
             staffname.setText("");
@@ -411,11 +419,11 @@ public class Staff extends javax.swing.JFrame {
         if(!jobID.equals("")){
             whereClause = whereClause + " jobid = '" + jobID + "' and";
         }
-        if(!staffID.equals("") || !staffName.equals("") || !staffGender.equals("") || !staffSalary.equals("") || !jobID.equals("")){
-            query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
-            query = query.substring(0,query.length()-4);
-        } else {
+        if (staffID.equals("") && staffName.equals("") && staffGender.equals("") && staffSalary.equals("") && jobID.equals("")){// If all the textFields are empty, abort
             return;
+        } else {
+            query = query + whereClause; 
+            query = query.substring(0,query.length()-4);         
         }
         try{
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
