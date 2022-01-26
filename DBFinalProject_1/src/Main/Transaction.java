@@ -165,7 +165,7 @@ public class Transaction extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setText("Staff ID (Cashier)");
+        jLabel3.setText("Staff ID");
 
         productamount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         productamount.addActionListener(new java.awt.event.ActionListener() {
@@ -284,11 +284,11 @@ public class Transaction extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Cust. Name", "Staff ID", "Product ID", "Amount", "Total", "Date"
+                "ID", "Cust. Name", "Staff ID", "Staff Name", "Product ID", "Amount", "Total", "Date"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -380,10 +380,10 @@ public class Transaction extends javax.swing.JFrame {
             String query = "insert into transaction(transactionid,customername,staffid,productid,amount,total,date) "
                     + "values ('" + transID + "','" + custName + "','" + staffID + "','" + productID + "'," + amt + "," + total + ",'" + transDate + "')";
             PreparedStatement stmt2 = con.prepareStatement(query);stmt2.execute();
-            PreparedStatement selectStmt = con.prepareStatement("select * from transaction where transactionid = '" + transID + "'"); // Selects added row to be put into table
+            PreparedStatement selectStmt = con.prepareStatement("select * from transaction inner join staff on transaction.staffid = staff.staffid where transactionid = '" + transID + "'"); // Selects added row to be put into table
             ResultSet rsSelect = selectStmt.executeQuery();
             while(rsSelect.next()){
-                Object [] row = {rsSelect.getString(1),rsSelect.getString(2),rsSelect.getString(3),rsSelect.getString(4),rsSelect.getInt(5),rsSelect.getDouble(6),rsSelect.getString(7)};
+                Object [] row = {rsSelect.getString(1),rsSelect.getString(2),rsSelect.getString(3),rsSelect.getString(9),rsSelect.getString(4),rsSelect.getInt(5),rsSelect.getDouble(6),rsSelect.getTimestamp(7)};
                 model.addRow(row);
             }
             con.close();
@@ -487,7 +487,7 @@ public class Transaction extends javax.swing.JFrame {
         String transDate = datebought.getText();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        String query = "select * from transaction";
+        String query = "select * from transaction inner join staff on transaction.staffid = staff.staffid";
         String whereClause = " where";
         if(!transID.equals("")){
             whereClause = whereClause + " transactionid = '" + transID + "' and";
@@ -517,7 +517,7 @@ public class Transaction extends javax.swing.JFrame {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while(rs.next()){
-                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getDouble(6),rs.getTimestamp(7)};
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(9),rs.getString(4),rs.getInt(5),rs.getDouble(6),rs.getTimestamp(7)};
                 model.addRow(row);
             }
             transactionid.setText("");

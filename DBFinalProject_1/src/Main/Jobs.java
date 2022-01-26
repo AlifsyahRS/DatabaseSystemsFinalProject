@@ -225,11 +225,11 @@ public class Jobs extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Job ID", "Name", "Department ID"
+                "Job ID", "Name", "Department ID", "Department"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -298,10 +298,10 @@ public class Jobs extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.execute();
-            PreparedStatement stmtSelect = con.prepareStatement("select * from job where jobid = '" + jobID + "'"); // To display inserted row
+            PreparedStatement stmtSelect = con.prepareStatement("select * from job inner join department on job.departmentid = department.departmentid where jobid = '" + jobID + "'"); // To display inserted row
             ResultSet rs = stmtSelect.executeQuery(); // Selects added row to put into table
             while(rs.next()){
-                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3)};
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(5)};
                 model.addRow(row);
             }   
             con.close();
@@ -379,7 +379,7 @@ public class Jobs extends javax.swing.JFrame {
         String dptID = departmentid.getText();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        String query = "select * from job";
+        String query = "select * from job inner join department on job.departmentid = department.departmentid";
         String whereClause = " where";
         if (!jobID.equals("")){
             whereClause = whereClause + " jobid = '" + jobID + "' and"; 
@@ -399,7 +399,7 @@ public class Jobs extends javax.swing.JFrame {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while(rs.next()){
-                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3)};
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(5)};
                 model.addRow(row);
             }
             con.close();

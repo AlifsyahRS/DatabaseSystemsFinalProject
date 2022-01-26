@@ -292,11 +292,11 @@ public class Product extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Product ID", "Product Name", "Type", "Price", "Stock", "Vendor ID"
+                "Product ID", "Product Name", "Type", "Price", "Stock", "Vendor ID", "Vendor Name"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -368,10 +368,10 @@ public class Product extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.execute();
-            PreparedStatement selectStmt = con.prepareStatement("select * from product where productid = '" + id + "'"); // To display inserted row
+            PreparedStatement selectStmt = con.prepareStatement("select * from product inner join vendor on product.vendorid = vendor.vendorid where productid = '" + id + "'"); // To display inserted row
             ResultSet rs = selectStmt.executeQuery();
             while(rs.next()){
-                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getDouble(4),rs.getInt(5),rs.getString(6)};
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getDouble(4),rs.getInt(5),rs.getString(6),rs.getString(8)};
                 model.addRow(row);
             }
             con.close();
@@ -479,7 +479,8 @@ public class Product extends javax.swing.JFrame {
         String price = productprice.getText();
         String stock = productstock.getText();
         String idVendor = vendorid.getText();
-        String query = "select * from product";
+        String query = "select * from product "
+                + "inner join vendor on product.vendorid = vendor.vendorid";
         String whereClause = " where";
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
@@ -512,7 +513,7 @@ public class Product extends javax.swing.JFrame {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while(rs.next()){
-                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getInt(5),rs.getString(6)};
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getInt(5),rs.getString(6),rs.getString(8)};
                 model.addRow(row);
             }
             con.close();

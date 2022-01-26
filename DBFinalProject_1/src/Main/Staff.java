@@ -266,11 +266,11 @@ public class Staff extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Staff ID", "Name", "Gender", "Salary", "Job ID"
+                "Staff ID", "Name", "Gender", "Salary", "Job ID", "Job"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -341,7 +341,7 @@ public class Staff extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","");
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.execute();
-            PreparedStatement selectStmt = con.prepareStatement("select * from staff where staffid = '" + staffID + "'"); // To display inserted row
+            PreparedStatement selectStmt = con.prepareStatement("select * from staff inner join job on staff.jobid = job.jobid where staffid = '" + staffID + "'"); // To display inserted row
             ResultSet rs = selectStmt.executeQuery();
             while(rs.next()){
                 Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getString(5)};
@@ -378,7 +378,7 @@ public class Staff extends javax.swing.JFrame {
             PreparedStatement stmtSelect = con.prepareStatement("select * from staff where staffid = '" + staffID + "'");
             ResultSet rs = stmtSelect.executeQuery(); // Selects added row to put into table
             while(rs.next()){
-                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getString(5)};
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getString(5),rs.getString(7)};
                 model.addRow(row);
             }            
             con.close();
@@ -449,7 +449,7 @@ public class Staff extends javax.swing.JFrame {
         String jobID = jobid.getText();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        String query = "select * from staff";
+        String query = "select * from staff inner join job on staff.jobid = job.jobid";
         String whereClause = " where";
         if(!staffID.equals("")){
             whereClause = whereClause + " staffid = '" + staffID + "' and";
@@ -475,7 +475,7 @@ public class Staff extends javax.swing.JFrame {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while(rs.next()){
-                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getString(5)};
+                Object[] row = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getFloat(4),rs.getString(5),rs.getString(7)};
                 model.addRow(row);
             }
             con.close();
