@@ -496,10 +496,10 @@ public class Transaction extends javax.swing.JFrame {
             whereClause = whereClause + " customername = '" + custName + "' and";
         }
         if(!staffID.equals("")){
-            whereClause = whereClause + " staffid = '" + staffID + "' and";
+            whereClause = whereClause + " transaction.staffid = '" + staffID + "' and";
         }
         if(!productID.equals("")){
-            whereClause = whereClause + " productid = '" + productID + "' and";
+            whereClause = whereClause + " transaction.productid = '" + productID + "' and";
         }
         if(!amt.equals("")){
             whereClause = whereClause + " amount = '" + amt + "' and";

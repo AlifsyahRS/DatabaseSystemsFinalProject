@@ -501,7 +501,7 @@ public class Product extends javax.swing.JFrame {
         }
 
         if(!idVendor.equals("")){
-            whereClause = whereClause + " vendorid = '" + idVendor + "' and";
+            whereClause = whereClause + " product.vendorid = '" + idVendor + "' and";
         }
         
         if (!id.equals("") || !name.equals("") || !type.equals("") || !price.equals("") || !stock.equals("") || !idVendor.equals("")){

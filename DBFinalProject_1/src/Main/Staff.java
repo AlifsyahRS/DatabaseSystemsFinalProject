@@ -464,7 +464,7 @@ public class Staff extends javax.swing.JFrame {
             whereClause = whereClause + " salary = " + staffSalary + " and";
         }
         if(!jobID.equals("")){
-            whereClause = whereClause + " jobid = '" + jobID + "' and";
+            whereClause = whereClause + " staff.jobid = '" + jobID + "' and";
         }
         if(!staffID.equals("") || !staffName.equals("") || !staffGender.equals("") || !staffSalary.equals("") || !jobID.equals("")){
             query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table

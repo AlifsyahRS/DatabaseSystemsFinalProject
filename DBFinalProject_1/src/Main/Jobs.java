@@ -388,7 +388,7 @@ public class Jobs extends javax.swing.JFrame {
             whereClause = whereClause + " jobName = '" + name + "' and";
         }
         if (!dptID.equals("")){
-            whereClause = whereClause + " departmentid = '" + dptID + "' and";
+            whereClause = whereClause + " job.departmentid = '" + dptID + "' and";
         }
         if (!jobID.equals("") || !name.equals("") || !dptID.equals("")){
             query = query + whereClause; // Text fields need to have something in order for update to work. This avoids empty string values for the table
